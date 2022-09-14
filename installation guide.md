@@ -5,11 +5,27 @@ Update statement will search for available updates for your system and installed
 ```
 sudo apt update
 ```
-Check docker is installed or not
+Check if docker and docker compose is installed or not :
 
 ```
-docker --version
+sudo docker --version
+sudo docker-compose version
 ```
 if it's not installed please check the link bellow :
 
 https://docs.docker.com/engine/install/ubuntu/
+
+Post-installation steps for Linux:
+
+https://docs.docker.com/engine/install/linux-postinstall/
+
+Install jq package :
+
+jq is like sed for JSON data - we can use it to slice and filter and map and transform structured data with the same ease that sed, awk, grep .
+
+```
+sudo apt install jq
+```
+
+
+
