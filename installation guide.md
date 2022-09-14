@@ -27,5 +27,19 @@ jq is like sed for JSON data - we can use it to slice and filter and map and tra
 sudo apt install jq
 ```
 
+Check vm.max_map_count on linux :
+
+To make it persistent, we can add this line:
+
+```
+vm.max_map_count=262144
+```
+in our ***/etc/sysctl.conf*** and run
+
+```
+sudo sysctl -p
+```
+
+
 
 
