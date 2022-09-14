@@ -26,6 +26,23 @@ For a Production enviroments we will need as minimum :
 
 In this project we will adopt the architecture bellow :
 
+![alt text](https://github.com/whatisdeadmayneverdie/Elastic-security/blob/cfc8951b784fe39c1549f3d7b68276a4cf4d01bd/Architecture.png "Project architecture")
+
+## Components
+
+***Elasticsearch***  is a distributed, RESTful search and analytics engine, it centrally stores your data for  fast search, fine‑tuned relevancy, and powerful analytics. 
+
+***Kibana***  is a free and open user interface that lets you visualize your Elasticsearch data .
+
+***Logstash*** is a server-side pipeline for data processing.
+
+***Beats*** is a free and open platform for single-purpose data shippers.
+
+***Fleet Server*** is the mechanism to connect Elastic Agents to Fleet.
+
+***MinIO*** is a High Performance Object Storage.
+
+***Docker*** is a platform for running certain applications in software containers.
 
 
 
