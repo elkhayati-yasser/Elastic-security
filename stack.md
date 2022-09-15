@@ -164,7 +164,7 @@ version: "2.2"
 
 services:
   setup:
-    image: docker.elastic.co/elasticsearch/elasticsearch:${VERSION}
+    image: docker.elastic.co/elasticsearch/elasticsearch:\${VERSION}
     volumes:
       - certs:/usr/share/elasticsearch/config/certs
       - ./temp:/temp
@@ -246,8 +246,6 @@ services:
           "      - 0.0.0.0\n"\
           "      - 127.0.0.1\n"\
           > config/certs/instances.yml;
-          apt update;
-          apt install unzip openssl -y;
           bin/elasticsearch-certutil cert --silent --pem -out config/certs/certs.zip --in config/certs/instances.yml --ca-cert config/certs/ca/ca.crt --ca-key config/certs/ca/ca.key;
           unzip config/certs/certs.zip -d config/certs; unzip config/certs/certs.zip -d /temp/certs; chmod -R 777 /temp/certs;
           openssl pkcs8 -in config/certs/logstash/logstash.key -topk8 -nocrypt -out config/certs/logstash/logstash.pkcs8.key;
