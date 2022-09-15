@@ -3,6 +3,7 @@ Now that everything is in order, let's build a highly available and distributed 
 
 ```
 sudo su
+
 ```
 First, we will define some environment variables, so that we can use them as we go along :
 
@@ -24,6 +25,10 @@ MEM_LIMIT=1073741824
 COMPOSE_PROJECT_NAME=es
 EOF
 ```
+
+To use diffrent terminal sessions we will edit the The .bashrc because it's a shell script that is executed every time a user opens a new shell, and we will use it to load our .env for each new sessions .
+
+
 
 
 ```
