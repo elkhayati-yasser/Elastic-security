@@ -35,18 +35,13 @@ jq is like sed for JSON data - we can use it to slice and filter and map and tra
 sudo apt install jq
 ```
 
-Check vm.max_map_count on linux :
-
-To make it persistent, we can add this line:
+Change the vm.max_map_count on linux :
 
 ```
-vm.max_map_count=262144
+sudo sysctl -w vm.max_map_count=262144
 ```
-in our ***/etc/sysctl.conf*** and run
 
-```
-sudo sysctl -p
-```
+For changes to persist please add a linge into  ***/etc/sysctl.conf*** and realod with (sudo sysctl -p)
 Now that the environment prerequisites are installed and we are ready to go, we will divide the SIEM implementation into 5 sections:
 
 [Elastic cluster only (3 nodes)](../blob/master/LICENSE)
