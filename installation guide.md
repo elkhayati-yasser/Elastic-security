@@ -24,6 +24,7 @@ Install docker-compose :
 ```
 sudo apt install docker-compose
 ```
+Or follow the instructions here : https://phoenixnap.com/kb/install-docker-compose-on-ubuntu-20-04
 
 Install jq package :
 
