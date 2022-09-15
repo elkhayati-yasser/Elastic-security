@@ -130,6 +130,19 @@ output {
 EOF
 ```
 
+This **input plugin** enables Logstash to receive events from the Beats framework and configure Logstash to listen on port ***5045*** for incoming Beats connections and to index into Elasticsearch.
+
+***%{[@metadata][beat]}*** sets the first part of the index name to the value of the metadata field and ***%{[@metadata][version]}*** sets the second part to the Beat version.  For example: **metricbeat-6.1.6**.
+
+
+In cryptography, **PKCS #8** is a standard syntax for storing private key information, we will generate it using **openssl**.
+
+#### creating the stack docker-compose file 
+
+
+
+
+
 
 
 
