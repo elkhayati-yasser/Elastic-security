@@ -137,7 +137,37 @@ This **input plugin** enables Logstash to receive events from the Beats framewor
 
 In cryptography, **PKCS #8** is a standard syntax for storing private key information, we will generate it using **openssl**.
 
-#### creating the stack docker-compose file 
+#### Creating the stack docker-compose file 
+
+Back to the main working Directory :
+
+```
+cd ${HOME}/elkstack
+```
+
+Our Cluster will be exposed on a **public ip address**, in our case the ethernet network interface of the linux machine. The interface can have names like eth0 , ens33
+.
+
+It is recommended to have a static IP on your server so that your IP never expires or to ask your network administrator to allocate an IP on your DHCP server.
+
+Please visit the link below to fix a static IP with internet on your Ubuntu Server.
+
+https://www.makeuseof.com/configure-static-ip-address-settings-ubuntu-22-04/
+
+***Make sure you have the Internet on your server before you proceed.***
+
+
+ 
+
+
+
+
+
+
+
+
+
+
 
 
 
