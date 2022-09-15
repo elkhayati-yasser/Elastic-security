@@ -1,4 +1,4 @@
-# Installation guide for Ubuntu Server 22.04 
+# Detailed Installation guide for Ubuntu Server 22.04 
 
 Update statement will search for available updates for your system and installed programs based on the sources defined in ***/etc/apt/source.list***
 
@@ -39,6 +39,23 @@ in our ***/etc/sysctl.conf*** and run
 ```
 sudo sysctl -p
 ```
+Now that the environment prerequisites are installed and we are ready to go, we will divide the SIEM implementation into 5 sections:
+
+[Elastic cluster only (3 nodes)](../blob/master/LICENSE)
+
+[Fleet server](../blob/master/LICENSE)
+
+[Elastic Monitoring (Metricbeat)](../blob/master/LICENSE)
+
+[Snapshot and Backup (Minio)](../blob/master/LICENSE)
+
+[Sysymon and Elastic Security Endpoint integration ( Windows)](../blob/master/LICENSE)
+
+
+
+
+
+
 
 
 
