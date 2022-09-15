@@ -45,4 +45,11 @@ In this project we will adopt the architecture bellow :
 ***Docker*** is a platform for running certain applications in software containers.
 
 
+# Implementation process
+
+[Detailled installation](../blob/master/instalation guide.md)
+
+[Automation using bash](../blob/master/LICENSE)
+
+
 
