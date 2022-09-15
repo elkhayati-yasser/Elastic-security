@@ -25,6 +25,7 @@ COMPOSE_PROJECT_NAME=es
 EOF
 ```
 
+To load the .env to our session :
 
 ```
 source .env
