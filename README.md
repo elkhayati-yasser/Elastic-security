@@ -47,7 +47,7 @@ In this project we will adopt the architecture bellow :
 
 # Implementation process
 
-[Detailled installation](../installation guide)
+[Detailled installation](https://github.com/whatisdeadmayneverdie/Elastic-security/blob/c50b1a18a1aeba4d322357e3479c8c806ce213fa/installation%20guide.md)
 
 [Automation using bash](../blob/master/LICENSE)
 
