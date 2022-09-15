@@ -28,7 +28,7 @@ In this project we will adopt the architecture bellow :
 
 ![alt text](https://github.com/whatisdeadmayneverdie/Elastic-security/blob/cfc8951b784fe39c1549f3d7b68276a4cf4d01bd/Architecture.png "Project architecture")
 
-## Components
+### Components
 
 ***Elasticsearch***  is a distributed, RESTful search and analytics engine, it centrally stores your data for  fast search, fine‑tuned relevancy, and powerful analytics. 
 
