@@ -47,7 +47,7 @@ In this project we will adopt the architecture bellow :
 
 # Implementation process
 
-[Detailled installation](../blob/master/installation%20guide)
+[Detailled installation](../blob/master/installation%20guide.md)
 
 [Automation using bash](../blob/master/LICENSE)
 
