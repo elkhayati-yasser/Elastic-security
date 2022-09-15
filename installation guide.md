@@ -4,6 +4,7 @@ Update statement will search for available updates for your system and installed
 
 ```
 sudo apt update
+sudo apt install unzip openssl -y;
 ```
 Check if docker and docker compose is installed or not :
 
