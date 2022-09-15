@@ -73,6 +73,8 @@ server.shutdownTimeout: "5s"
 EOF
 ```
 
+Logstash has two types of configuration files: **pipeline** configuration files, which define the Logstash processing pipeline, and settings files, which specify options that control **Logstash startup and execution**.
+
 Create logstash.yml
 
 ```
@@ -85,8 +87,51 @@ Create pipeline.yml
 
 ```                        
 cat > pipeline.yml<<EOF
-- pipeline.id: normal-beats
+- pipeline.id: beats
   path.config: "/usr/share/logstash/pipeline/*.conf"
   pipeline.workers:3
 EOF
 ```
+
+One last step before releasing the docker-compose files, we need to create the pipeline that logstash will use to receive the documents from different beats (filebeat, Heartbeat, packetbeat, etc.).
+
+The Logstash event processing pipeline has three stages: ***inputs → filters → outputs***. Inputs generate events, filters modify them, and outputs ship them elsewhere.
+
+To do this, we will create a folder, which will contain our **beats.conf** file so that we could load it into the logstash container in the following steps.
+
+```
+mkdir pipeline
+cd pipeline
+```
+And we will copy the following command into the terminal:
+```
+cat > beats.conf<<EOF
+input {
+    beats {
+        port => 5045
+        ssl => true
+        ssl_certificate => "/usr/share/logstash/config/certs/logstash.crt"
+        ssl_key => "/usr/share/logstash/config/certs/logstash.pkcs8.key"
+    }
+}
+filter {
+}
+output {
+    elasticsearch {
+        hosts => ["https://es01:9200"]
+        user => "elastic"
+        password => "${ELASTIC_PASSWORD}"
+        ssl => true
+        ssl_certificate_verification => true
+        cacert => "/usr/share/logstash/config/certs/ca.crt"
+        index => "%{[@metadata][beat]}-%{[@metadata][version]}" 
+    }
+}
+EOF
+```
+
+
+
+
+
+
