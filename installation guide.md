@@ -19,6 +19,12 @@ Post-installation steps for Linux:
 
 https://docs.docker.com/engine/install/linux-postinstall/
 
+Install docker-compose :
+
+```
+sudo apt install docker-compose
+```
+
 Install jq package :
 
 jq is like sed for JSON data - we can use it to slice and filter and map and transform structured data with the same ease that sed, awk, grep .
