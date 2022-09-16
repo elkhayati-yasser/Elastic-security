@@ -43,7 +43,9 @@ The command bellow will create a ***.env*** file , where we will store all infor
 
 ```
 cat > .env<<EOF
+PASSWORD=`openssl rand -base64 29 | tr -d "=+/" | cut -c1-25`
 IP=`echo $(ip route get 1.2.3.4 | awk '{print $7}')`
+ENCRYPTION_KEY=`openssl rand -base64 40 | tr -d "=+/" | cut -c1-32`
 WORKDIR="${HOME}/elkstack"
 VERSION="8.2.0"
 HEAP="512m"
@@ -90,6 +92,10 @@ Create kibana.yml
 cat > kibana.yml<<EOF
 server.host: "0.0.0.0"
 server.shutdownTimeout: "5s"
+xpack.security.encryptionKey: "${ENCRYPTION_KEY}"
+xpack.reporting.encryptionKey: "${ENCRYPTION_KEY}"
+xpack.encryptedSavedObjects.encryptionKey: "${ENCRYPTION_KEY}"
+xpack.reporting.kibanaServer.hostname: "localhost"
 EOF
 ```
 
@@ -130,8 +136,8 @@ input {
     beats {
         port => 5045
         ssl => true
-        ssl_certificate => "/usr/share/logstash/config/certs/logstash.crt"
-        ssl_key => "/usr/share/logstash/config/certs/logstash.pkcs8.key"
+        ssl_certificate => "/usr/share/logstash/config/certs/logstash/logstash.crt"
+        ssl_key => "/usr/share/logstash/config/certs/logstash/logstash.pkcs8.key"
     }
 }
 filter {
@@ -140,10 +146,10 @@ output {
     elasticsearch {
         hosts => ["https://es01:9200"]
         user => "elastic"
-        password => "${ELASTIC_PASSWORD}"
+        password => "\${ELASTIC_PASSWORD}"
         ssl => true
         ssl_certificate_verification => true
-        cacert => "/usr/share/logstash/config/certs/ca.crt"
+        cacert => "/usr/share/logstash/config/certs/ca/ca.crt"
         index => "%{[@metadata][beat]}-%{[@metadata][version]}" 
     }
 }
@@ -481,7 +487,7 @@ services:
    image: docker.elastic.co/logstash/logstash:\${VERSION}
    volumes:
       - certs:/usr/share/logstash/config/certs
-      - /root/pipeline:/usr/share/logstash/pipeline 
+      - \${WORKDIR}/pipeline:/usr/share/logstash/pipeline 
       - ./logstash.yml:/usr/share/logstash/config/logstash.yml
       - ./pipeline.yml:/usr/share/logstash/config/pipeline.yml
    restart: unless-stopped
@@ -503,6 +509,17 @@ volumes:
     driver: local
 EOF
 ```
+
+To start our deplotment:
+
+```
+docker-compose -f stack-compose.yml up -d
+```
+
+The ***-d*** option is used to bring up the project in a ***slient mode** if you want to see the verbose of what happing remove it .
+
+
+
 
 
 
