@@ -14,6 +14,25 @@ cd ${HOME}/elkstack
 
 First, we will define some environment variables, so that we can use them as we go along .
 
+
+Our Cluster will be exposed on a **public ip address**, in our case the ethernet network interface of the linux machine. The interface can have names like eth0 , ens33
+.
+
+We can use a commmand to extract it 
+
+IP=`echo $(ip route get 1.2.3.4 | awk '{print $7}')`
+
+It is recommended to have a static IP on your server so that your IP never expires or to ask your network administrator to allocate an IP on your DHCP server.
+
+Please visit the link below to fix a static IP with internet on your Ubuntu Server.
+
+https://www.makeuseof.com/configure-static-ip-address-settings-ubuntu-22-04/
+
+***Make sure you have the Internet on your server before you proceed.***
+
+In my case my Ubuntu Server is NATed and i have ***@IP=192.168.208.135***
+
+
 We are going to generate a random password, and we will consider it as the password for Elasticsearch and Kibana :
 
 ```
@@ -24,6 +43,7 @@ The command bellow will create a ***.env*** file , where we will store all infor
 
 ```
 cat > .env<<EOF
+IP=`echo $(ip route get 1.2.3.4 | awk '{print $7}')`
 WORKDIR="${HOME}/elkstack"
 VERSION="8.2.0"
 HEAP="512m"
@@ -145,18 +165,6 @@ Back to the main working Directory :
 cd ${HOME}/elkstack
 ```
 
-Our Cluster will be exposed on a **public ip address**, in our case the ethernet network interface of the linux machine. The interface can have names like eth0 , ens33
-.
-
-It is recommended to have a static IP on your server so that your IP never expires or to ask your network administrator to allocate an IP on your DHCP server.
-
-Please visit the link below to fix a static IP with internet on your Ubuntu Server.
-
-https://www.makeuseof.com/configure-static-ip-address-settings-ubuntu-22-04/
-
-***Make sure you have the Internet on your server before you proceed.***
-
-In my case my Ubuntu Server is NATed and i have ***@IP=192.168.208.135***
 
 ```
 cat > stack-compose.yml<<EOF
@@ -192,7 +200,7 @@ services:
           "      - es01\n"\
           "      - localhost\n"\
           "    ip:\n"\
-          "      - 192.168.208.135\n"\
+          "      - \${IP}\n"\
           "      - 127.0.0.1\n"\
           "  - name: es02\n"\
           "    dns:\n"\
@@ -211,7 +219,7 @@ services:
           "      - kibana\n"\
           "      - localhost\n"\
           "    ip:\n"\
-          "      - 192.168.208.135\n"\
+          "      - \${IP}\n"\
           "      - 127.0.0.1\n"\
           "  - name: apm\n"\
           "    dns:\n"\
@@ -230,7 +238,7 @@ services:
           "      - fleet\n"\
           "      - localhost\n"\
           "    ip:\n"\
-          "      - 192.168.208.135\n"\
+          "      - \${IP}\n"\
           "      - 127.0.0.1\n"\
           "  - name: minio01\n"\
           "    dns:\n"\
