@@ -61,12 +61,6 @@ COMPOSE_PROJECT_NAME=es
 EOF
 ```
 
-To load the .env to our session :
-
-```
-source .env
-```
-
 #### Elasticsearch , Kibana and Logstash configuration files 
 
 Create elasticsearch.yml
@@ -97,6 +91,7 @@ xpack.encryptedSavedObjects.encryptionKey: "\${ENCRYPTION_KEY}"
 xpack.reporting.kibanaServer.hostname: "localhost"
 EOF
 ```
+We set an encryption key so that sessions are not invalidated.
 
 Logstash has two types of configuration files: **pipeline** configuration files, which define the Logstash processing pipeline, and settings files, which specify options that control **Logstash startup and execution**.
 
