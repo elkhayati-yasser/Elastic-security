@@ -42,6 +42,10 @@ sudo sysctl -w vm.max_map_count=262144
 ```
 
 For changes to persist please add a linge into  ***/etc/sysctl.conf*** and realod with (sudo sysctl -p)
+
+```
+echo "vm.max_map_count=262144" >> /etc/sysctl.conf && sudo sysctl -p
+```
 Now that the environment prerequisites are installed and we are ready to go, we will divide the SIEM implementation into 5 sections:
 
 [Elastic cluster only (3 nodes)](../blob/master/LICENSE)
