@@ -43,7 +43,6 @@ The command bellow will create a ***.env*** file , where we will store all infor
 
 ```
 cat > .env<<EOF
-PASSWORD=`openssl rand -base64 29 | tr -d "=+/" | cut -c1-25`
 IP=`echo $(ip route get 1.2.3.4 | awk '{print $7}')`
 ENCRYPTION_KEY=`openssl rand -base64 40 | tr -d "=+/" | cut -c1-32`
 WORKDIR="${HOME}/elkstack"
@@ -92,9 +91,9 @@ Create kibana.yml
 cat > kibana.yml<<EOF
 server.host: "0.0.0.0"
 server.shutdownTimeout: "5s"
-xpack.security.encryptionKey: "${ENCRYPTION_KEY}"
-xpack.reporting.encryptionKey: "${ENCRYPTION_KEY}"
-xpack.encryptedSavedObjects.encryptionKey: "${ENCRYPTION_KEY}"
+xpack.security.encryptionKey: "\${ENCRYPTION_KEY}"
+xpack.reporting.encryptionKey: "\${ENCRYPTION_KEY}"
+xpack.encryptedSavedObjects.encryptionKey: "\${ENCRYPTION_KEY}"
 xpack.reporting.kibanaServer.hostname: "localhost"
 EOF
 ```
@@ -458,6 +457,7 @@ services:
       - ELASTICSEARCH_HOSTS=https://es01:9200
       - ELASTICSEARCH_USERNAME=kibana_system
       - ELASTICSEARCH_PASSWORD=\${KIBANA_PASSWORD}
+      - ENCRYPTION_KEY=\${ENCRYPTION_KEY}
       - ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES=config/certs/ca/ca.crt
       - SERVER_SSL_ENABLED=true
       - SERVER_SSL_CERTIFICATE=config/certs/kibana/kibana.crt
