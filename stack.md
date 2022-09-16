@@ -279,7 +279,7 @@ services:
     depends_on:
       setup:
         condition: service_healthy
-    image: docker.elastic.co/elasticsearch/elasticsearch:${VERSION}
+    image: docker.elastic.co/elasticsearch/elasticsearch:\${VERSION}
     labels:
       co.elastic.logs/module: elasticsearch
     volumes:
@@ -332,7 +332,7 @@ services:
     container_name: es02
     depends_on:
       - es01
-    image: docker.elastic.co/elasticsearch/elasticsearch:${VERSION}
+    image: docker.elastic.co/elasticsearch/elasticsearch:\${VERSION}
     labels:
       co.elastic.logs/module: elasticsearch
     volumes:
@@ -382,7 +382,7 @@ services:
     container_name: es03
     depends_on:
       - es02
-    image: docker.elastic.co/elasticsearch/elasticsearch:${VERSION}
+    image: docker.elastic.co/elasticsearch/elasticsearch:\${VERSION}
     labels:
       co.elastic.logs/module: elasticsearch
     volumes:
@@ -437,7 +437,7 @@ services:
         condition: service_healthy
       es03:
         condition: service_healthy
-    image: docker.elastic.co/kibana/kibana:${VERSION}
+    image: docker.elastic.co/kibana/kibana:\${VERSION}
     labels:
       co.elastic.logs/module: kibana
     volumes:
@@ -478,7 +478,7 @@ services:
         condition: service_healthy
       es03:
         condition: service_healthy
-   image: docker.elastic.co/logstash/logstash:${VERSION}
+   image: docker.elastic.co/logstash/logstash:\${VERSION}
    volumes:
       - certs:/usr/share/logstash/config/certs
       - /root/pipeline:/usr/share/logstash/pipeline 
@@ -487,7 +487,7 @@ services:
    restart: unless-stopped
    environment:
      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
-     ELASTIC_PASSWORD : ${ELASTIC_PASSWORD} 
+     ELASTIC_PASSWORD : \${ELASTIC_PASSWORD} 
    ports:
       - "5045:5045"
 volumes:
