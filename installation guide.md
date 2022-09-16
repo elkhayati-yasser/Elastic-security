@@ -1,5 +1,8 @@
 # Detailed Installation guide for Ubuntu Server 22.04 
 
+
+Using su is the simplest way to switch to the administrative account in the current login session.
+
 ```
 sudo su
 ```
@@ -46,7 +49,9 @@ echo "vm.max_map_count=262144" >> /etc/sysctl.conf && sysctl -p
 ```
 Now that the environment prerequisites are installed and we are ready to go, we will divide the SIEM implementation into 5 sections:
 
-[Elastic cluster only (3 nodes)](../blob/master/LICENSE)
+
+
+[Elastic cluster only (3 nodes)](../master/stack.md)
 
 [Fleet server](../blob/master/LICENSE)
 
