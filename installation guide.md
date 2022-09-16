@@ -53,7 +53,7 @@ Now that the environment prerequisites are installed and we are ready to go, we 
 
 [Elastic cluster only (3 nodes)](../master/stack.md)
 
-[Fleet server](../blob/master/LICENSE)
+[Fleet server](../master/fleet.md)
 
 [Elastic Monitoring (Metricbeat)](../blob/master/LICENSE)
 
