@@ -68,10 +68,13 @@ Create elasticsearch.yml
 ```
 cat > elasticsearch.yml<<EOF
 network.host: 0.0.0.0
+xpack.security.authc.api_key.enabled: true
 EOF
 ```
 
-The ***network.host*** config is used to tell elasticsearch which IP in the server it will use to bind.We use 0.0.0.0 to tell the Elasticsearch service to bind to all the IPs available on the server
+The ***network.host*** config is used to tell elasticsearch which IP in the server it will use to bind.We use 0.0.0.0 to tell the Elasticsearch service to bind to all the IPs available on the server.
+
+The API key service Set to **true** to enable the built-in API key service.
 
 Change the file ownership . 
 ```
