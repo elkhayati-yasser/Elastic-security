@@ -3,6 +3,11 @@
 
 Fleet Server is required if we plan to use Fleet for central management of all agent .It supports many Elastic Agent connections and serves as a control plane for updating agent policies, collecting status information, and coordinating actions across Elastic Agents. It also provides a scalable architecture. 
 
+we should be placed in the working directory :
+
+```
+cd ${HOME}/elkstack
+```
 
 ### Add to .env the path of fleet certificate
 
@@ -140,6 +145,8 @@ ssl:
     eP5YaTaHeHOY0a4O8r7dv65DOxwUlzM8hq5jsFWW
     -----END CERTIFICATE-----
 ```
+
+Now you should see the fleet logs flowing. 
 
 
 
