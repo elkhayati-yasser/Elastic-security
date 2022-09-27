@@ -4,7 +4,7 @@
 Fleet Server is required if we plan to use Fleet for central management of all agent .It supports many Elastic Agent connections and serves as a control plane for updating agent policies, collecting status information, and coordinating actions across Elastic Agents. It also provides a scalable architecture. 
 
 
-### add to .env the path of fleet certificate
+### Add to .env the path of fleet certificate
 
 ```
 cat >> .env<<EOF
@@ -16,17 +16,22 @@ We will use Fleet API , Any actions we can perform through the Fleet UI are also
 
 Please refer to the [Fleet OpenAPI](https://github.com/elastic/kibana/blob/8.4/x-pack/plugins/fleet/common/openapi/README.md) file in the Kibana repository for more details.
 
-
+Either you are in the same terminal context or you need to reassign the password variable. To do this, go to the .env file, gragrabe password value, and assign it to the password variable so that you can use it later.
 
 ```
-curl -k -u "elastic:${PASSWD}" -s -XPOST https://localhost:5601/api/fleet/setup --header 'kbn-xsrf: true' >/dev/null 2>&1
+PASSWORD=kacsTCIvBlcX4u5cTx47mpiOp
+curl -k -u "elastic:${PASSWORD}" -s -XPOST https://localhost:5601/api/fleet/setup --header 'kbn-xsrf: true' >/dev/null 2>&1
 ```
-We will be placed to the working directory 
+
+we should be placed in the working directory :
+
 ```
 cd ${HOME}/elkstack
 ```
 
-### create fleet.yml docker compose file
+### Create fleet.yml 
+
+The configuration file of that the fleet server will be using 
 
 ```
 cat > ${WORKDIR}/fleet.yml <<EOF
@@ -41,13 +46,31 @@ enabled: true
 EOF
 ```
 
-Now we will generate service tokens so that elastic agent can connect back to elasticsearch
+Now we should generate the fleet server policy :
+```
+curl -k -u "elastic:${PASSWORD}" "https://localhost:5601/api/fleet/agent_policies?sys_monitoring=true" \
+    --header 'kbn-xsrf: true' \
+    --header 'Content-Type: application/json' \
+    -d '{"id":"fleet-server-policy","name":"Fleet Server policy","description":"","namespace":"default","monitoring_enabled":["logs","metrics"],"has_fleet_server":true}'
+```
+
+Now we should wait a while for the policy to generate .
+
+Now we have to define the URL of the fleet, on which the agents will try to connect. 
 
 ```
-SERVICETOKEN=`curl -k -u "elastic:${PASSWD}" -s -X POST https://localhost:5601/api/fleet/service-tokens --header 'kbn-xsrf: true' | jq -r .value`
+curl -k -u "elastic:${PASSWORD}" -XPUT "https://localhost:5601/api/fleet/settings" \
+--header 'kbn-xsrf: true' \
+--header 'Content-Type: application/json' \
+-d '{"fleet_server_hosts":["https://localhost:8220"]}'
 ```
 
-### generate ***fleet-compose.yml***
+Now we have to generate the service token 
+```
+SERVICETOKEN=`curl -k -u "elastic:${PASSWORD}" -s -X POST https://localhost:5601/api/fleet/service-tokens --header 'kbn-xsrf: true' | jq -r .value`
+```
+
+### Generate fleet-compose.yml
 ```
 cat > fleet-compose.yml<<EOF
 version: '2.2'
@@ -56,7 +79,7 @@ services:
   fleet:
     container_name: fleet
     user: root
-    image: docker.elastic.co/beats/elastic-agent:${VERSION}
+    image: docker.elastic.co/beats/elastic-agent:\${VERSION}
     environment:
       - FLEET_SERVER_ENABLE=true
       - FLEET_URL=https://fleet:8220
@@ -65,7 +88,8 @@ services:
       - FLEET_SERVER_ELASTICSEARCH_CA=/usr/share/elastic-agent/certificates/ca/ca.crt
       - FLEET_SERVER_CERT=/usr/share/elastic-agent/certificates/fleet/fleet.crt
       - FLEET_SERVER_CERT_KEY=/usr/share/elastic-agent/certificates/fleet/fleet.key
-      - FLEET_SERVER_SERVICE_TOKEN=${SERVICETOKEN}
+      - FLEET_SERVER_SERVICE_TOKEN=\${SERVICETOKEN}
+      - FLEET_SERVER_POLICY=fleet-server-policy
       - CERTIFICATE_AUTHORITIES=/usr/share/elastic-agent/certificates/ca/ca.crt
     ports:
       - 8220:8220
@@ -77,17 +101,45 @@ volumes: {"certs"}
 EOF
 ```
 
+Now we can make the fleet appear and wait for it to finish:
 
 ```
-curl -k -u "elastic:${PASSWD}" "https://localhost:5601/api/fleet/agent_policies?sys_monitoring=true" \
-    --header 'kbn-xsrf: true' \
-    --header 'Content-Type: application/json' \
-    -d '{"id":"fleet-server-policy","name":"Fleet Server policy","description":"","namespace":"default","monitoring_enabled":["logs","metrics"],"has_fleet_server":true}'
+docker-compose -f fleet-compose.yml up -d
 ```
 
+Now go to https://@IP:5601/app/fleet/settings and click on edit hosts :
+
+Fleet server hosts : https://@IP:8220
+
+now on the output section click on edit , and change the Hosts to https://@IP:9200
+
+in the ***YAML configuration*** replace the CA with your CA:
 
 ```
-docker-compose -f fleet-compose.yml up -d >/dev/null 2>&1
+ssl:
+  certificate_authorities:
+  - |
+    -----BEGIN CERTIFICATE-----
+    MIIDSjCCAjKgAwIBAgIVAKU1o3rWbsH5+XQEO7MY4kcbypSKMA0GCSqGSIb3DQEB
+    CwUAMDQxMjAwBgNVBAMTKUVsYXN0aWMgQ2VydGlmaWNhdGUgVG9vbCBBdXRvZ2Vu
+    ZXJhdGVkIENBMB4XDTIyMDkyNzEwMjMxMloXDTI1MDkyNjEwMjMxMlowNDEyMDAG
+    A1UEAxMpRWxhc3RpYyBDZXJ0aWZpY2F0ZSBUb29sIEF1dG9nZW5lcmF0ZWQgQ0Ew
+    ggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDAnYd0z6CsRDnNYhvkWTOg
+    /7WcMu3+Vo6rJGrSSPXCTtWtbl8Jiz8IC5RvKaSp1Lg/53ZnfwfoaZxnB7zFb1mz
+    Fui+nLf5OUm86J0s0rRskZNv9BUAt47OXZZiyINF4l8gp3pFQPHBwQo8qtC1NOjo
+    rcmepyMf6XTlhVNBHd57gc7omo1yiwjnfNQfcr2+NLSb8IrdNcAuurR3fCB/FjUA
+    yLl3eiWNK+jNcbaZ8JLcdHuHTTkgyee5ikU/Zw0tDgCn130CZHGIUTQeSlnpqh+K
+    TvEvERNDe/T/0HE5thsec76SO8go2wec09v5E8swns1BtR8Z05pSmDXE50/9LGoL
+    AgMBAAGjUzBRMB0GA1UdDgQWBBQbm7ucBD3hA8kAZq7x5/7/GlcQ2TAfBgNVHSME
+    GDAWgBQbm7ucBD3hA8kAZq7x5/7/GlcQ2TAPBgNVHRMBAf8EBTADAQH/MA0GCSqG
+    SIb3DQEBCwUAA4IBAQBnvDcCqjoBV3XGPILrb8v6PXdoiKyWo+QMCQGQlu2+bHiS
+    CU0sdMGS65/KcBB7D63ULEULd5BKunkAGdymQfcx2QV2QNxGl/ACl/kHhz2W4W3l
+    1StDXTTeSuxXT9dKZ1be3JBMusS7t63k44ehFrxhjgjXYkT7Og/ZvykXTl6qcgSm
+    RXer/Dl8QZ6zkGXbPv8bKjUM5VlowueE5P1w7amTv4JWVQxc1WJzUq7BA46uW3hs
+    yCiMl98Gz0GCpLe9HojNg4XYcbKVoNbwI2Q1POFtqYOqrWMX9yiI821qVwftqL+R
+    eP5YaTaHeHOY0a4O8r7dv65DOxwUlzM8hq5jsFWW
+    -----END CERTIFICATE-----
 ```
+
 
 
