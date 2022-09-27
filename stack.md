@@ -45,8 +45,8 @@ The command bellow will create a ***.env*** file , where we will store all infor
 cat > .env<<EOF
 IP=`echo $(ip route get 1.2.3.4 | awk '{print $7}')`
 ENCRYPTION_KEY=`openssl rand -base64 40 | tr -d "=+/" | cut -c1-32`
-WORKDIR="${HOME}/elkstack"
-VERSION="8.2.0"
+WORKDIR=${HOME}/elkstack
+VERSION=8.4.0
 HEAP="512m"
 ELASTIC_PASSWORD=${PASSWORD}
 KIBANA_PASSWORD=${PASSWORD}
