@@ -39,6 +39,8 @@ mkdir ${HOME}/elkstack/data
 
 ### create snapshot-compose.yml
 
+The minio console will be exposed on port ***9001***. 
+
 ```
 cat > snapshot-compose.yml<<EOF
 version: '2.2'
@@ -47,14 +49,15 @@ services:
   minio01:
     container_name: minio01
     image: minio/minio
-    user: "0:0"
+    user: "${UG}"
     environment:
       - MINIO_ROOT_USER=minio
       - MINIO_ROOT_PASSWORD=minio123
     volumes: ['./data:/data', './temp:/temp']
-    command: server --address 0.0.0.0:9000 /data
+    command: server --console-address ":9001" /data
     ports:
-      - 9000:9000
+      - "9000:9000"
+      - "9001:9001"
     restart: on-failure
     healthcheck:
       test: curl http://localhost:9000/minio/health/live
@@ -75,17 +78,26 @@ services:
 EOF
 ```
 
+To make the container stand up, we will use.
 
 ```
 docker-compose -f snapshot-compose.yml up -d
 ```
 
+The ***S3 repository plugin*** adds support for using AWS S3 as a repository for Snapshot/Restore.
+
+For each instance we will install this pulgin.
+
+***NOTE***: For earlier versions of Elasticsearch, [repository-s3] is no longer a plugin but a module provided with this distribution of Elasticsearch.
 
 ```
 for((i=1;i<=3;i+=1)); do docker exec es0$i bin/elasticsearch-plugin install --batch repository-s3; done 
-
-
 ```
+
+The client that we use to connect to S3 has a number of settings available. The settings have the form ***s3.client.CLIENT_NAME.SETTING_NAME***
+
+
+**Access_key** : An S3 access key for each instance. 
 
 ```
 for((i=1;i<=3;i+=1))
@@ -94,9 +106,9 @@ docker exec -i es0$i bin/elasticsearch-keystore add -xf s3.client.minio01.access
 minio
 EOF
 done
-```                                                                                         
-                                                                                       
+```  
 
+**secret_key** : An S3 secret key for each instance. 
 ```
 for((i=1;i<=3;i+=1))
 do
@@ -106,17 +118,21 @@ EOF
 done
 ```            
 
- ```                                                                                         
- for((i=1;i<=3;i+=1)); do docker restart es0$i; done 
- ``` 
+We have to restart everything so we will take the new settings into consideration.
+
+```                                                                                         
+for((i=1;i<=3;i+=1)); do docker restart es0$i; done 
+``` 
+
+Extract the docker ip from the minio container to use it later. 
+
+```
+IPMINIO=`docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' minio01`
+```
  
+To set up the repo : 
  
- ```
- IPMINIO=`docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' minio01`
- ```
- 
- 
- ```
+```
  curl -k -u elastic:${PASSWORD} -XPUT "https://localhost:9200/_snapshot/minio01" -H 'Content-Type: application/json' -d'
 {
   "type" : "s3",
@@ -130,9 +146,39 @@ done
 }'
 ``` 
 
+we can create a snapshot policy to automatically take snapshots and control how long they are retained.
+
+ 	
+**schedule :** When the snapshot should be taken.
+	
+**name :** The name each snapshot should be given.
+
+**repository :** Which repository to take the snapshot in.
+
+**Retention :** how much we will keep the snapshot.
+
+**min_count:** Always keep at least 1 successful snapshots, even if they’re more than 5 days old
+
+**max_count:** Keep no more than 20 successful snapshots, even if they’re less than 5 days old
+
 ```
 curl -k -u elastic:${PASSWORD} -XPUT "https://localhost:9200/_slm/policy/minio-snapshot-policy" -H 'Content-Type: application/json' -d'{  "schedule": "0 */30 * * * ?",   "name": "<minio-snapshot-{now/d}>",   "repository": "minio01",   "config": {     "partial": true  },  "retention": {     "expire_after": "5d",     "min_count": 1,     "max_count": 20   }}'
 ```
+
+To execute the policy .
+
+```
+curl -k -u elastic:${PASSWORD} -XPUT "https://localhost:9200/_slm/policy/minio-snapshot-policy/_execute"
+```
+
+Now please visit **Stack Management > Snapshot and Restore** .
+
+Or vist http://@IP:9001 to see Minio console
+
+
+[Sysymon and Elastic Security Endpoint integration ( Windows)](../master/elasticendpoint.md)
+
+
 
 
 
