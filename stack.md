@@ -519,6 +519,8 @@ The ***-d*** option is used to bring up the project in a ***slient mode** if you
 
 [Fleet server](../master/fleet.md)
 
+[Stack monitoring](../master/monitoring.md)
+
 
 
 
