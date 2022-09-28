@@ -517,6 +517,12 @@ docker-compose -f stack-compose.yml up -d
 The ***-d*** option is used to bring up the project in a ***slient mode** if you want to see the verbose of what happing remove it .
 
 
+[Fleet server](../master/fleet.md)
+
+
+
+
+
 
 
 
