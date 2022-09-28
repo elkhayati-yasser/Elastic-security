@@ -57,7 +57,7 @@ Now that the environment prerequisites are installed and we are ready to go, we 
 
 [Elastic Monitoring (Metricbeat)](../master/monitoring.md)
 
-[Snapshot and Backup (Minio)](../blob/master/LICENSE)
+[Snapshot and Backup (Minio)](../master/snapshot.md)
 
 [Sysymon and Elastic Security Endpoint integration ( Windows)](../blob/master/LICENSE)
 
