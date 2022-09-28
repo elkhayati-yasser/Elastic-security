@@ -55,7 +55,7 @@ Now that the environment prerequisites are installed and we are ready to go, we 
 
 [Fleet server](../master/fleet.md)
 
-[Elastic Monitoring (Metricbeat)](../blob/master/LICENSE)
+[Elastic Monitoring (Metricbeat)](../master/monitoring.md)
 
 [Snapshot and Backup (Minio)](../blob/master/LICENSE)
 
