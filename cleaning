@@ -1,0 +1,12 @@
+  docker stop es01 es02 es03 kibana metricbeat logstash filebeat apm entsearch minio01 fleet es_mc_1 es_wait_until_ready_1 apm es_setup_1 >/dev/null 2>&1
+  docker rm es01 es02 es03 kibana metricbeat logstash filebeat apm entsearch minio01 fleet es_mc_1 es_wait_until_ready_1 apm es_setup_1 >/dev/null 2>&1
+  docker network rm es_default >/dev/null 2>&1
+  docker volume rm es_data01 >/dev/null 2>&1
+  docker volume rm es_data02 >/dev/null 2>&1
+  docker volume rm es_data03 >/dev/null 2>&1
+  docker volume rm es_fleet >/dev/null 2>&1
+  docker volume rm es_certs >/dev/null 2>&1
+  docker volume rm es_kibanadata >/dev/null 2>&1
+  echo "${green}[DEBUG]${reset} Removed volumes and networks"
+
+  rm -rf ${WORKDIR} >/dev/null 2>&1
