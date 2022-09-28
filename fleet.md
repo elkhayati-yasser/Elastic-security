@@ -75,6 +75,11 @@ Now we have to generate the service token
 SERVICETOKEN=`curl -k -u "elastic:${PASSWORD}" -s -X POST https://localhost:5601/api/fleet/service-tokens --header 'kbn-xsrf: true' | jq -r .value`
 ```
 
+Add service token to the .env file 
+```
+echo SERVICETOKEN=${SERVICETOKEN} >> .env
+```
+
 ### Generate fleet-compose.yml
 ```
 cat > fleet-compose.yml<<EOF
