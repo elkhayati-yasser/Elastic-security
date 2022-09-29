@@ -89,6 +89,8 @@ On the host, open a command-line interface and navigate to the directory where y
 
 
 
+**NOTE** :  In the script assets you will find a powershell script to automate the process and a descreption of how to use it .
+
 
 
 
