@@ -48,11 +48,37 @@ Assuming we have downloaded both **sysmon.exe** and **sysmonconfig-export.xml** 
 
 In the administrator's Powershell session, we need to go to the Sysmon folder and install the application.
 
-```
+```N
 .\sysmon64.exe -accepteula -i PATH\TO\FOLDER\sysmonconfig-export.xml
 ```
 
 To configure the new Elastic agent on our Windows workstation and ingest the sysmon data into our SIEM, and we should have the fleet server installed and healthy.
+
+
+we will use two integrations: Endpoint Security and Custom Windows Event Logs that collect and analyze logs from any Windows event log channel with Elastic Agent, in our case the sysmon log channel.
+
+
+
+### Endpoint Security 
+
+In Kibana: **Management → Integrations** , Search for and select **Endpoint and Cloud Security**, then select Add Endpoint and Cloud Security. The integration configuration page appears.
+
+
+We should configure the **Endpoint and Cloud Security** integration with an Integration name, and we should enter a name for the agent policy in New agent policy name(ex:WINDOWS) **→ Save and continue** .
+
+
+### Custom Windows Event Logs
+
+In Kibana: **Management → Integrations** , Search for and select **Custom Windows Event Logs**, then select Add Endpoint and Cloud Security. The integration configuration page appears.
+
+We should configure the **Custom Windows Event Logs** integration with an Integration name, and we should enter the chanel name in our case **Microsoft-Windows-Sysmon/Operational** and we will click the Existing hosts tab and select an existing policy (ex:WINDOWS) **→ Save and continue** .
+
+
+
+
+
+
+
  
 
 
