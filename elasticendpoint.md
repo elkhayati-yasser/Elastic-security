@@ -75,20 +75,23 @@ We should configure the **Custom Windows Event Logs** integration with an Integr
 
 
 
+### Configure and enroll the Elastic Agent 
+
+Go to **Fleet → Agents → Add agent**.
+
+We should select the agent policy for the Elastic Agent that we created before **(existing policy)**.
+
+
+We should select **Windows platform** , then copy the provided commands.
+
+
+On the host, open a command-line interface and navigate to the directory where you want to install Elastic Agent. Paste and run the commands from Fleet to download, extract, enroll, and start Elastic Agent. 
 
 
 
 
- 
 
 
 
-```
-curl -u elastic:${PASSWORD} --request POST \
-  --url <kibana_url>/api/fleet/agent_policies?sys_monitoring=true \
-  --header 'content-type: application/json' \
-  --header 'kbn-xsrf: true' \
-  --data '{"name":"WINDOWS","namespace":"default","endpoint"}'
-```
 
 
