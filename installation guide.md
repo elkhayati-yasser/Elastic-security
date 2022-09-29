@@ -59,7 +59,7 @@ Now that the environment prerequisites are installed and we are ready to go, we 
 
 [Snapshot and Backup (Minio)](../master/snapshot.md)
 
-[Sysymon and Elastic Security Endpoint integration ( Windows)](../main/elasticendpoint.md)
+[Sysmon and Elastic Security Endpoint integration ( Windows)](../main/elasticendpoint.md)
 
 
 
