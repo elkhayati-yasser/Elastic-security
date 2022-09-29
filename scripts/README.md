@@ -24,7 +24,7 @@ Change the restriction policy , in the administrator's powershell session :
 Set-ExecutionPolicy -ExecutionPolicy Undefined -Scope CurrentUser
 ```
 
-And execute the script **./installagent.ps1** ,The script will download sysmon, the swiftsecurity configuration, elasticagent and install everything.
+And execute the script **./installagent.ps1** ,The script will download **sysmon, the swiftsecurity configuration, elasticagent** and install everything.
 
 
 
