@@ -1,0 +1,14 @@
+version: '2.2'
+
+services:
+  metricbeat:
+    container_name: metricbeat
+    user: root
+    command: metricbeat -environment container --strict.perms=false
+    image: docker.elastic.co/beats/metricbeat:${VERSION}
+    labels:
+      co.elastic.logs/module: beats
+    volumes: ['./metricbeat.yml:/usr/share/metricbeat/metricbeat.yml', 'certs:/usr/share/metricbeat/certificates', './temp:/temp', '/var/run/docker.sock:/var/run/docker.sock:ro']
+    restart: on-failure
+
+volumes: {"certs"}
