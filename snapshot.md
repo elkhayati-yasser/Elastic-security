@@ -176,7 +176,7 @@ Now please visit **Stack Management > Snapshot and Restore** .
 Or vist http://@IP:9001 to see Minio console
 
 
-[Sysymon and Elastic Security Endpoint integration ( Windows)](../master/elasticendpoint.md)
+[Sysmon and Elastic Security Endpoint integration ( Windows)](../master/elasticendpoint.md)
 
 
 
