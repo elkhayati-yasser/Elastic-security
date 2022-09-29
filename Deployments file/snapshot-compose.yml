@@ -1,0 +1,32 @@
+version: '2.2'
+
+services:
+  minio01:
+    container_name: minio01
+    image: minio/minio
+    user: "0:0"
+    environment:
+      - MINIO_ROOT_USER=minio
+      - MINIO_ROOT_PASSWORD=minio123
+    volumes: ['./data:/data', './temp:/temp']
+    command: server --console-address ":9001" /data
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    restart: on-failure
+    healthcheck:
+      test: curl http://localhost:9000/minio/health/live
+      interval: 30s
+      timeout: 10s
+      retries: 5
+  mc:
+    image: minio/mc
+    depends_on:
+      - minio01
+    entrypoint: >
+      bin/sh -c '
+      sleep 5;
+      /usr/bin/mc config host add s3 http://minio01:9000 minio minio123 --api s3v4;
+      /usr/bin/mc mb s3/elastic;
+      /usr/bin/mc policy set public s3/elastic;
+      '
