@@ -1,4 +1,4 @@
-# Elastic-security
+# The definitive Guide of deploying SIEM SOC based on Elastic-security stack 
 Elastic cluster ( SIEM SOC )
 
 
@@ -49,7 +49,9 @@ In this project we will adopt the architecture bellow :
 
 [Detailled installation](../master/installation%20guide.md)
 
-[Automation using bash](../blob/master/LICENSE)
+[Automation using bash](../master/automation.md)
+
+
 
 
 
