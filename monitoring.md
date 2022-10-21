@@ -22,7 +22,7 @@ Create and store the password in .env file
 
 ```
 RPASSWORD=`docker exec es01 bin/elasticsearch-reset-password -u remote_monitoring_user -a -s -b`
-echo RPASSWORD=${RPASSWORD}
+echo RPASSWORD=${RPASSWORD} >> .env
 ```
 
 
