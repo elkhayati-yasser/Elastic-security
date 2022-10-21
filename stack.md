@@ -20,7 +20,9 @@ Our Cluster will be exposed on a **public ip address**, in our case the ethernet
 
 We can use a commmand to extract it 
 
-IP=`echo $(ip route get 1.2.3.4 | awk '{print $7}')`
+```
+IP=`hostname -I | cut -d' ' -f1`
+```
 
 It is recommended to have a static IP on your server so that your IP never expires or to ask your network administrator to allocate an IP on your DHCP server.
 
@@ -43,7 +45,7 @@ The command bellow will create a ***.env*** file , where we will store all infor
 
 ```
 cat > .env<<EOF
-IP=`echo $(ip route get 1.2.3.4 | awk '{print $7}')`
+IP=`hostname -I | cut -d' ' -f1`
 ENCRYPTION_KEY=`openssl rand -base64 40 | tr -d "=+/" | cut -c1-32`
 WORKDIR=${HOME}/elkstack
 VERSION=8.4.0
