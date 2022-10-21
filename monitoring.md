@@ -157,7 +157,7 @@ metricbeat.modules:
     - stats
     - state
   period: 10s
-  hosts: ["http://metricbeat:5066", "http://filebeat:5066"]
+  hosts: ["http://metricbeat:5066"]
   xpack.enabled: true
   ssl.enabled: true
   ssl.verification_mode: full
